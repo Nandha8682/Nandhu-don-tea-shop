@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nandhu Don Tea Shop</title>
+    <style>
+        /* --- CSS DESIGN (RESPONSIVE & MOBILE-FIRST) --- */
+        :root {
+            --primary-color: #1e3f20; /* Deep Leaf Green */
+            --accent-color: #cda275;  /* Warm Amber/Wood */
+            --bg-light: #fdfbf7;      /* Soft Cream Base */
+            --card-bg: #ffffff;       /* Pure White for Menus */
+            --text-dark: #2b2b2b;
+            --text-muted: #666666;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Header Navigation */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .shop-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shop-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .shop-logo span {
+            color: var(--accent-color);
+        }
+
+        .contact-link {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Navigation Layout on Laptop vs Mobile */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .cart-toggle-btn {
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .cart-toggle-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Hero Banner Section */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover;
+            height: 35vh;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .hero-banner p {
+            font-size: 1rem;
+            color: #e0e0e0;
+            max-width: 600px;
+        }
+
+        /* Main Screen Split (Responsive Workspace) */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* Default to 1 stack column for Mobile */
+            gap: 30px;
+        }
+
+        /* Adaptive Layout for Laptop/Desktop Screen Sizes */
+        @media (min-width: 992px) {
+            .main-container {
+                grid-template-columns: 2.8fr 1.2fr; /* Menu left side, Cart right side */
+            }
+            .hero-banner h1 {
+                font-size: 3.5rem;
+            }
+            .hero-banner p {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Search Controls Header Row */
+        .menu-controls {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        @media (min-width: 576px) {
+            .menu-controls {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .search-bar {
+            padding: 10px 18px;
+            width: 100%;
+            max-width: 320px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(30,63,32,0.2);
+        }
+
+        /* Adaptive Fluid Grid Layout for Tea Items */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #eef0eb;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .menu-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .menu-details {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .menu-title {
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .menu-description {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .menu-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background-color: #2b592e;
+        }
+
+        /* Order Invoice Basket Sidebar */
+        .cart-panel {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #eef0eb;
+            height: fit-content;
+        }
+
+        @media (min-width: 992px) {
+            .cart-panel {
+                position: sticky;
+                top: 90px; /* Sticks neatly to side on laptops */
+            }
+        }
+
+        .cart-panel h3 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid #f4f1ea;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cart-bucket {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .cart-item-info h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .cart-item-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff5252;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0 5px;
+        }
+
+        .cart-summary {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 2px solid #f4f1ea;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .checkout-btn:hover {
+            background-color: #b88f62;
+        }
+
+        .empty-msg {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Element */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            font-size: 0.88rem;
+        }
+
+        footer p {
+            margin-bottom: 6px;
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="shop-brand">
+            <div class="shop-logo">Nandhu Don<span>.</span></div>
+            <a href="tel:8682956340" class="contact-link">📞 +91 8682956340</a>
+        </div>
+        <nav>
+            <a href="#menu-section">Menu</a>
+            <button class="cart-toggle-btn" onclick="scrollToCart()">Cart (<span id="badge-count">0</span>)</button>
+        </nav>
+    </header>
+
+    <section class="hero-banner">
+        <h1>Nandhu Don Tea Shop</h1>
+        <p>Carefully selected traditional leaves, aromatic premium chai, and restorative herbal blends brewed fresh daily.</p>
+    </section>
+
+    <div class="main-container" id="menu-section">
+        
+        <main>
+            <div class="menu-controls">
+                <h2>Beverage Menu</h2>
+                <input type="text" id="search-input" class="search-bar" placeholder="Search tea styles..." oninput="searchTeas()">
+            </div>
+
+            <div class="menu-grid" id="menu-wrapper">
+                </div>
+        </main>
+
+        <aside class="cart-panel" id="cart-container">
+            <h3>Your Order Basket</h3>
+            <div class="cart-bucket" id="cart-items-wrapper">
+                <p class="empty-msg">Your basket is currently empty.</p>
+            </div>
+            <div class="cart-summary">
+                <div class="total-row">
+                    <span>Total Bill:</span>
+                    <span id="bill-total">₹0.00</span>
+                </div>
+                <button class="checkout-btn" onclick="processCheckout()">Place Order</button>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Nandhu Don Tea Shop. All rights reserved.</p>
+        <p>Contact Us: <a href="tel:8682956340">+91 8682956340</a> | Open Daily</p>
+    </footer>
+
+    <script>
+        // Data Structure targeting your precise request
+        const teaMenu = [
+            { id: 1, name: "Premium Black Tea", description: "Bold, robust, and rich fully fermented tea leaves.", price: 40.00, img: "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&q=80&w=400" },
+            { id: 2, name: "Organic Green Tea", description: "Pure antioxidants with smooth earthy natural undertones.", price: 50.00, img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=400" },
+            { id: 3, name: "High Mountain Oolong", description: "Partially oxidized master leaf featuring unique floral notes.", price: 70.00, img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&q=80&w=400" },
+            { id: 4, name: "Classic Masala Chai", description: "Traditional strong milk tea brewed with warm spices.", price: 30.00, img: "https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&q=80&w=400" },
+            { id: 5, name: "Soothing Chamomile", description: "Caffeine-free floral infusion known for deep calming effects.", price: 60.00, img: "https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=400" },
+            { id: 6, name: "Refreshing Peppermint", description: "Crisp and invigorating herbal tea aiding crisp digestion.", price: 55.00, img: "https://images.unsplash.com/photo-1627435601357-374b1be08c97?auto=format&fit=crop&q=80&w=400" },
+            { id: 7, name: "Traditional Earl Grey", description: "Sophisticated black tea scented with citrus bergamot oil.", price: 45.00, img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=400" },
+            { id: 8, name: "English Breakfast", description: "Hearty and rich full-bodied blend perfect alongside milk.", price: 45.00, img: "https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&q=80&w=400" },
+            { id: 9, name: "Fragrant Jasmine Green", description: "Delicate green tea leaves scented with fresh jasmine petals.", price: 65.00, img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=400" }
+        ];
+
+        let ordersBasket = [];
+
+        // Build and display menu grid dynamically
+        function renderMenuCards(itemsToRender) {
+            const container = document.getElementById('menu-wrapper');
+            container.innerHTML = '';
+
+            if(itemsToRender.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#666;">No menu matches found.</p>`;
+                return;
+            }
+
+            itemsToRender.forEach(tea => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <img src="${tea.img}" alt="${tea.name}" class="menu-img" loading="lazy">
+                    <div class="menu-details">
+                        <h4 class="menu-title">${tea.name}</h4>
+                        <p class="menu-description">${tea.description}</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹${tea.price.toFixed(2)}</span>
+                            <button class="add-btn" onclick="addToBasket(${tea.id})">Add Item</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Search Input Filter Logic
+        function searchTeas() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = teaMenu.filter(tea => tea.name.toLowerCase().includes(query) || tea.description.toLowerCase().includes(query));
+            renderMenuCards(filtered);
+        }
+
+        // Cart Basket Application Operations
+        function addToBasket(teaId) {
+            const itemMatch = teaMenu.find(tea => tea.id === teaId);
+            const exists = ordersBasket.find(order => order.id === teaId);
+
+            if (exists) {
+                exists.quantity += 1;
+            } else {
+                ordersBasket.push({ ...itemMatch, quantity: 1 });
+            }
+            refreshInvoiceView();
+        }
+
+        function removeFromBasket(teaId) {
+            ordersBasket = ordersBasket.filter(order => order.id !== teaId);
+            refreshInvoiceView();
+        }
+
+        function refreshInvoiceView() {
+            // Calculate and display item badge quantity
+            const globalQty = ordersBasket.reduce((acc, current) => acc + current.quantity, 0);
+            document.getElementById('badge-count').innerText = globalQty;
+
+            const listContainer = document.getElementById('cart-items-wrapper');
+            
+            if (ordersBasket.length === 0) {
+                listContainer.innerHTML = '<p class="empty-msg">Your basket is currently empty.</p>';
+            } else {
+                listContainer.innerHTML = '';
+                ordersBasket.forEach(order => {
+                    const row = document.createElement('div');
+                    row.className = 'cart-item';
+                    row.innerHTML = `
+                        <div class="cart-item-info">
+                            <h5>${order.name}</h5>
+                            <p>${order.quantity}x @ ₹${order.price.toFixed(2)}</p>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromBasket(${order.id})">&times;</button>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            }
+
+            // Global Cost Sum Computation
+            const absoluteSum = ordersBasket.reduce((acc, current) => acc + (current.price * current.quantity), 0);
+            document.getElementById('bill-total').innerText = `₹${absoluteSum.toFixed(2)}`;
+        }
+
+        function processCheckout() {
+            if (ordersBasket.length === 0) {
+                alert("Please add at least one item into your basket to proceed.");
+            } else {
+                alert("Order placed successfully at Nandhu Don Tea Shop! 🍵 Thank you.");
+                ordersBasket = [];
+                refreshInvoiceView();
+            }
+        }
+
+        // Smooth scroll to basket (essential UX improvement for mobile screens)
+        function scrollToCart() {
+            document.getElementById('cart-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Load content immediately on layout ready
+        window.onload = () => {
+            renderMenuCards(teaMenu);
+        };
+    </script>
+</body>
+</html>
